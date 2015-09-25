@@ -3,11 +3,9 @@
     {def $allowed_zones = ''}
     {foreach ezini( 'General', 'AllowedTypes', 'block.ini' ) as $type}
         {set $allowed_zones = ezini( $type, 'AllowedZones', 'block.ini' )}
-        {if and(is_set($allowed_zones), count($allowed_zones)|gt(0)) }
-            {if $allowed_zones|contains($zone.zone_identifier) }
+        {if and( $allowed_zones, $allowed_zones|contains( $zone.zone_identifier ) )}
         <option value="{$type}">{ezini( $type, 'Name', 'block.ini' )}</option>
-            {/if}
-        {else}
+        {elseif not($allowed_zones) }
             <option value="{$type}">{ezini( $type, 'Name', 'block.ini' )}</option>
         {/if}
     {/foreach}
