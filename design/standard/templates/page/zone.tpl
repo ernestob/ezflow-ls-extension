@@ -1,7 +1,15 @@
 <div class="object-left">
     <select name="ContentObjectAttribute_ezpage_block_type_{$attribute.id}_{$zone_id}">
+    {def $allowed_zones = ''}
     {foreach ezini( 'General', 'AllowedTypes', 'block.ini' ) as $type}
+        {set $allowed_zones = ezini( $type, 'AllowedZones', 'block.ini' )}
+        {if and(is_set($allowed_zones), count($allowed_zones)|gt(0)) }
+            {if $allowed_zones|contains($zone.zone_identifier) }
         <option value="{$type}">{ezini( $type, 'Name', 'block.ini' )}</option>
+            {/if}
+        {else}
+            <option value="{$type}">{ezini( $type, 'Name', 'block.ini' )}</option>
+        {/if}
     {/foreach}
     </select>
     <input class="button" type="submit" name="CustomActionButton[{$attribute.id}_new_block-{$zone_id}]" value="{'Add block'|i18n( 'design/standard/datatype/ezpage' )}" />
